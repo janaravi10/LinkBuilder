@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+       <button id="download" class="button">
+           Download <span id="count"></span> links
+       </button>
+       <button id="AddressBarLink" class="button">
+            Add From Address Bar
+       </button>
+       <div class="button page-count">
+           <div class="tags"><p class="tag">Start</p><p class="tag">End</p></div>
+           <input type="number" id="startBtn" class="input">
+           <input type="number" id="endBtn" class="input">
+           <button class="save" id="saveBtn">save</button>
+       </div>
+       <div class="button del-button">
+           <p class="tag">Delete last</p>
+            <input type="number" id="delInput" class="input">
+            <p class="tag">links</p>
+            <button class="save" id="deleteLast">Delete</button>
+       </div>
+        <button id="DeleteAll" class="button">
+            Delete all links
+        </button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
