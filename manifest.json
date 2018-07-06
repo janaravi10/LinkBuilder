@@ -18,9 +18,7 @@
                 "<all_urls>"
             ],
             "css":["content.css"],
-            "js": [
-                "content.js"
-            ]
+            "js": ["content.js"]
         }
     ],
     "background": {
