@@ -7,7 +7,7 @@
     altElement.className = "altBox";
     document.body.appendChild(altElement);
     //code for deleting event listener
-    let disposer, isCtrlPressed=false;
+    let disposer, isCtrlPressed = false;
     const ownAddEventListener = (scope, type, handler, capture) => {
         scope.addEventListener(type, handler, capture);
         return () => {
@@ -18,16 +18,16 @@
     window.addEventListener("mouseup", function (e) {
         if (e.altKey === true) {
             return;
-        }else if (e.ctrlKey === false && isCtrlPressed == false) {
+        } else if (e.ctrlKey === false && isCtrlPressed == false) {
             return;
-        } 
+        }
         disposer();
         let boxMeasures = element.getBoundingClientRect();
         let elWidth = boxMeasures.width,
             elHeight = boxMeasures.height,
             elX = boxMeasures.x,
             elY = boxMeasures.y;
-        if (e.ctrlKey === false || isCtrlPressed == false){
+        if (e.ctrlKey === false || isCtrlPressed == false) {
             element.style.display = "none";
             element.style.height = "0px";
             element.style.width = "0px";
@@ -56,15 +56,15 @@
     function getLinks(width, height, x, y) {
         function isVisible(ele) {
             var style = window.getComputedStyle(ele);
-            if(style.width === 0 ||
+            if (style.width === 0 ||
                 style.height === 0 ||
                 style.opacity === 0 ||
                 style.display === 'none' ||
-                style.visibility === 'hidden'){
-                     return false;
-                }else{
-                    return true;
-                }
+                style.visibility === 'hidden') {
+                return false;
+            } else {
+                return true;
+            }
         }
         domain = getDomain();
         let links = document.querySelectorAll("a"),
@@ -78,19 +78,25 @@
             if ((linkX >= x && linkX <= width + x) || ((linkX + linkWidth) >= x && (linkX + linkWidth) <= x + width)) {
                 if ((linkY >= y && linkY <= y + height) || ((linkY + linkHeight) >= y && (linkY + linkHeight) <= y + height)) {
                     if (elem.href.trim() !== "" && isVisible(elem) === true) {
+                        if(elem.children.length!==0){
+                            if (elem.children[0].tagName === "IMG") return;
+                        }
                         validLinks.push(elem);
                         datas.push({ href: elem.href, aText: elem.innerText, domain });
                     }
                 }
             } else if (((x >= linkX) && x <= (linkX + linkWidth)) && (((linkY >= y) || (linkY + linkHeight >= y)) && linkY <= (y + height))) {
-                if (elem.href.trim() !== "" && isVisible(elem)===true) {
+                if (elem.href.trim() !== "" && isVisible(elem) === true) {
+                    if (elem.children.length !== 0) {
+                        if (elem.children[0].tagName === "IMG") return;
+                    }
                     validLinks.push(elem);
                     datas.push({ href: elem.href, aText: elem.innerText, domain });
                 }
             }
         });
         if (validLinks.length !== 0) {
-            
+
             validLinks.forEach((valLink) => {
                 valLink.style.border = "1px dotted #000";
             });
@@ -110,7 +116,7 @@
     window.addEventListener("mousedown", manageMouseDown);
     function manageMouseDown(event) {
         if (event.buttons === 2 && (event.target.tagName == "A" || event.target.parentElement.tagName == "A")) {
-            if (event.target.parentElement.tagName == "A"){
+            if (event.target.parentElement.tagName == "A") {
                 if (event.target.parentElement.classList.contains("selectiveLinks")) {
                     let selectedLink = document.getElementsByClassName("selectiveLinks").length;
                     chrome.runtime.sendMessage({ updateMenu: true, selectedLink });
@@ -118,7 +124,7 @@
                     chrome.runtime.sendMessage({ addMenu: true });
                     event.target.parentElement.classList.add("findLink");
                 }
-            }else{
+            } else {
                 if (event.target.classList.contains("selectiveLinks")) {
                     let selectedLink = document.getElementsByClassName("selectiveLinks").length;
                     chrome.runtime.sendMessage({ updateMenu: true, selectedLink });
@@ -126,12 +132,12 @@
                     chrome.runtime.sendMessage({ addMenu: true });
                     event.target.classList.add("findLink");
                 }
- 
+
             }
 
         }
         if (event.altKey === true) {
-        event.preventDefault();
+            event.preventDefault();
             handleSelectiveClick(event);
             return;
         }
@@ -196,10 +202,10 @@
                 })
             } else if (request.getSingleLink) {
                 let singleLink = document.getElementsByClassName("findLink")[0], data = [], domain = getDomain();
-                if(singleLink.tagName!=="A"){
+                if (singleLink.tagName !== "A") {
                     singleLink = singleLink.parentElement;
                 }
-                
+
                 data.push({ href: singleLink.href, aText: singleLink.innerText, domain });
                 chrome.runtime.sendMessage({ link: data, isLink: true }, (res) => {
                     if (res.success) {
@@ -215,10 +221,10 @@
         });
     //handle selected clicks
     function handleSelectiveClick(eve) {
-        if (eve.target.tagName === "A" || eve.target.parentElement.tagName=="A") {
-            if(eve.target.tagName==="A"){
+        if (eve.target.tagName === "A" || eve.target.parentElement.tagName == "A") {
+            if (eve.target.tagName === "A") {
                 eve.target.classList.add("selectiveLinks");
-            }else{
+            } else {
                 eve.target.parentElement.classList.add("selectiveLinks");
             }
             altElement.style.display = "block";
